@@ -44,7 +44,6 @@ class PhysicsEngine:
             self._space.remove(shape)
         self._platform_shapes.clear()
 
-        # Строим новые
         for point_a, point_b in contours:
             seg = pymunk.Segment(
                 self._space.static_body,
@@ -61,11 +60,11 @@ class PhysicsEngine:
         self._running = True
 
     def stop(self) -> None:
-        """Останавливает симуляцию (шарик замирает)."""
+        """Останавливает симуляцию."""
         self._running = False
 
     def reset(self) -> None:
-        """Возвращает шарик на стартовую позицию."""
+        """Возвращает шарик на стартовую позицию (сверху, посередине)."""
         body = self._ball_body
         body.position         = (self.width // 2, 60)
         body.velocity         = (0, 0)
@@ -74,10 +73,7 @@ class PhysicsEngine:
         self._running = False
 
     def step(self) -> None:
-        """
-        Один шаг симуляции (вызывать каждый кадр).
-        Автоматически сбрасывает шарик при выходе за экран.
-        """
+        """Один шаг симуляции. Автоматически сбрасывает шарик при выходе за экран."""
         if not self._running:
             return
 
@@ -93,10 +89,7 @@ class PhysicsEngine:
             self.reset()
 
     def get_state(self) -> BallState:
-        """
-        Возвращает текущее состояние шарика.
-        Вызывать каждый кадр после step().
-        """
+        """Возвращает текущее состояние шарика."""
         body = self._ball_body
         return BallState(
             x      = body.position.x,
