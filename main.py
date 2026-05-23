@@ -1,19 +1,16 @@
 import sys
-import math
 import pygame
 import cv2
-import numpy as np
 
 from camera import open_camera, release_camera, read_frame, detect_surfaces, find_ball
 from physics import PhysicsEngine
-from projector import draw_ball, draw_platforms, draw_camera_preview, draw_ui
+from projector import draw_camera_background, draw_ball, draw_platforms, draw_ui
 
 
 # ── Настройки ───────────────────────────────────────────────────
 CAMERA_INDEX = 0          # индекс камеры (0 — первая доступная)
 WIDTH, HEIGHT = 800, 600  # разрешение окна (должно совпадать с камерой)
 FPS = 60                  # частота кадров
-PREVIEW_W, PREVIEW_H = 200, 150  # размер превью с камеры
 
 
 def surfaces_to_contours(surfaces):
@@ -28,7 +25,7 @@ def surfaces_to_contours(surfaces):
 def main():
     pygame.init()
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
-    pygame.display.set_caption("Falling Ball — Проектор + Камера")
+    pygame.display.set_caption("Falling Ball — Камера + Шарик")
     clock = pygame.time.Clock()
     font = pygame.font.SysFont("Arial", 16)
 
@@ -92,19 +89,16 @@ def main():
         state = engine.get_state()
 
         # ── Отрисовка ────────────────────────────────────────────
-        screen.fill((0, 0, 0))
+        # 1. Фон — изображение с камеры
+        draw_camera_background(screen, frame)
 
-        # Рисуем платформы
+        # 2. Платформы (поверх камеры)
         draw_platforms(screen, contours)
 
-        # Рисуем шарик
+        # 3. Шарик (поверх всего)
         draw_ball(screen, state)
 
-        # Рисуем превью с камеры (если есть)
-        if frame is not None:
-            draw_camera_preview(screen, frame, PREVIEW_W, PREVIEW_H)
-
-        # Рисуем UI
+        # 4. UI (самый верхний слой)
         current_fps = clock.get_fps()
         draw_ui(screen, font, engine.is_running(), ball_detected, current_fps)
 
