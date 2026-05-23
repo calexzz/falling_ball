@@ -93,6 +93,9 @@ def main():
         draw_platforms(screen, contours)
         draw_ball(screen, state)
 
+        flipped = pygame.transform.flip(screen, True, False)
+        screen.blit(flipped, (0, 0))
+
         pygame.display.flip()
         clock.tick(FPS)
 
