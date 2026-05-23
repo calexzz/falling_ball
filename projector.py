@@ -20,3 +20,4 @@ def show_on_monitor(mask):
     cv2.moveWindow("Mask", target_monitor.x, target_monitor.y)
     cv2.setWindowProperty("Mask", cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
     cv2.imshow("Mask", mask)
+# Нужно вставлять при выводе, после всех операций над изображением
