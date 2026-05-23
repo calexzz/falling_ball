@@ -1,0 +1,4 @@
+opencv-python>=4.5.0
+numpy>=1.21.0
+pymunk>=6.2.0
+pygame>=2.1.0
