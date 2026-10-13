@@ -1,0 +1,19 @@
+# print(tf.__version__)
+N=1000
+x=np.random.rand(1000)
+y=5.1*x+3+np.random.rand(N)*0.5
+model=tf.keras.models.Sequential()
+model.add(tf.keras.layers.Input(shape=(1,)))
+model.add(tf.keras.layers.Dense(1,activation='linear'))
+tf.keras.utils.plot_model(model, show_layer_activations=True, show_shapes=True)
+
+print(model.summary())
+model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=1e-1), loss='mse')
+es=tf.keras.callbacks.EarlyStopping(patience=5,mode='min',monitor='val_loss')
+history=model.fit(x,y,validation_split=0.2,epochs=1000,callbacks=[es])
+plt.plot(history.history['loss'],label='l@train')
+plt.plot(history.history['val_loss'],label='l@val')
+plt.show()
+yp = model.predict(x)
+plt.scatter(x,y)
+plt.scatter(x,yp)
